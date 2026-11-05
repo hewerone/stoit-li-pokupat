@@ -1,276 +1,713 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Стоит ли покупать?</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 2rem 0;
-            border-bottom: 1px solid #333;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            color: #fff;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin: 1.5rem 0;
-            gap: 10px;
-        }
-        .tab-btn {
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .tab-btn:hover {
-            background-color: #555;
-        }
-        .tab-btn.active {
-            background-color: #bb86fc;
-            color: #000;
-        }
-        .tab-content {
-            display: none;
-            padding: 2rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .calculator-box {
-            background: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .input-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #ccc;
-        }
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #444;
-            background: #000;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        .quick-buttons {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        .quick-btn {
-            padding: 8px 12px;
-            background: #333;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .quick-btn:hover {
-            background: #555;
-        }
-        button.action-btn {
-            background-color: #03dac6;
-            color: #000;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-        .result {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #2a2a2a;
-            border-radius: 5px;
-            border-left: 4px solid #bb86fc;
-        }
-        .rain-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .drop {
-            position: absolute;
-            bottom: 100%;
-            width: 2px;
-            background: rgba(187, 134, 252, 0.6);
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(110vh);
-            }
-        }
-        /* Стили для других вкладок */
-        .section-text {
-            line-height: 1.6;
-            color: #aaa;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стоит ли это покупать? 💸</title>
+<style>
+:root{
+  --bg:#07070f; --card:#12121f; --card2:#1a1a2e;
+  --neon1:#00ffd5; --neon2:#7c4dff; --neon3:#ff2e63;
+  --text:#e8e8f5; --muted:#8a8aa3;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; overflow-x:hidden; position:relative;
+}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.25;z-index:0;pointer-events:none}
+.b1{width:420px;height:420px;background:var(--neon2);top:-120px;left:-120px;animation:float1 14s ease-in-out infinite}
+.b2{width:360px;height:360px;background:var(--neon1);bottom:-100px;right:-80px;animation:float2 18s ease-in-out infinite}
+.b3{width:260px;height:260px;background:var(--neon3);top:40%;left:55%;opacity:.12;animation:float1 22s ease-in-out infinite reverse}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,40px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-40px)}}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:24px 16px 60px}
+header{text-align:center;padding:26px 0 6px}
+h1{
+  font-size:clamp(26px,5vw,42px);font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--neon1),var(--neon2),var(--neon3),var(--neon1));
+  background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite;
+}
+@keyframes shine{to{background-position:300% 0}}
+.sub{color:var(--muted);margin-top:8px;font-size:15px}
+.tabs{display:flex;gap:8px;justify-content:center;margin:24px 0 20px;flex-wrap:wrap}
+.tab{
+  padding:10px 20px;border-radius:30px;cursor:pointer;font-size:15px;font-weight:600;
+  background:var(--card);color:var(--muted);border:1px solid #2a2a44;transition:.25s;
+}
+.tab:hover{border-color:var(--neon1);color:var(--text)}
+.tab.active{background:linear-gradient(90deg,var(--neon2),var(--neon3));color:#fff;border-color:transparent;box-shadow:0 0 24px rgba(124,77,255,.45)}
+.card{
+  background:linear-gradient(160deg,var(--card),var(--card2));
+  border:1px solid #2a2a44;border-radius:22px;padding:26px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:cardIn .5s ease;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.card.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+input[type=number],select{
+  width:100%;padding:13px 16px;border-radius:12px;border:1px solid #2a2a44;
+  background:#0d0d18;color:var(--text);font-size:16px;outline:none;transition:.2s;
+}
+input:focus,select:focus{border-color:var(--neon1);box-shadow:0 0 0 3px rgba(0,255,213,.12)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{
+  flex:1;min-width:80px;padding:11px 8px;border-radius:12px;cursor:pointer;
+  background:#0d0d18;color:var(--muted);border:1px solid #2a2a44;font-size:14px;transition:.2s;
+}
+.seg button.on{background:rgba(0,255,213,.12);border-color:var(--neon1);color:var(--neon1)}
+.btn-big{
+  width:100%;margin-top:20px;padding:16px;border:none;border-radius:14px;cursor:pointer;
+  font-size:17px;font-weight:800;letter-spacing:.3px;color:#0a0a12;
+  background:linear-gradient(90deg,var(--neon1),#4dfff0,var(--neon2));
+  background-size:200% 100%;transition:.3s;animation:shine 5s linear infinite;
+}
+.btn-big:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,255,213,.35)}
+.btn-ghost{
+  width:100%;margin-top:10px;padding:13px;border-radius:12px;cursor:pointer;
+  background:transparent;color:var(--neon2);border:1px solid var(--neon2);
+  font-size:15px;font-weight:700;transition:.25s;
+}
+.btn-ghost:hover{background:rgba(124,77,255,.12);transform:translateY(-1px)}
+.result{margin-top:24px;display:none;animation:cardIn .5s ease}
+.result.show{display:block}
+.big-num{
+  text-align:center;font-size:clamp(56px,14vw,96px);font-weight:900;line-height:1;
+  color:var(--neon1);text-shadow:0 0 40px rgba(0,255,213,.6);
+}
+.big-num.danger{color:var(--neon3);text-shadow:0 0 40px rgba(255,46,99,.6)}
+.big-label{text-align:center;color:var(--muted);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:2px}
+.verdict{
+  text-align:center;font-size:clamp(20px,4vw,28px);font-weight:800;margin:18px 0 6px;
+  animation:pop .5s cubic-bezier(.2,1.6,.4,1);
+}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.timer{
+  text-align:center;font-size:18px;font-weight:700;color:var(--neon2);
+  font-variant-numeric:tabular-nums;margin:10px 0 4px;
+}
+.bars{margin-top:18px}
+.bar-row{margin:12px 0}
+.bar-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:5px}
+.bar{height:12px;background:#0d0d18;border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.f1{background:linear-gradient(90deg,var(--neon1),var(--neon2))}
+.f2{background:linear-gradient(90deg,var(--neon2),var(--neon3))}
+.f3{background:linear-gradient(90deg,#ff9f1c,var(--neon3))}
+.alt-box{
+  margin-top:18px;padding:16px;border-radius:14px;background:rgba(124,77,255,.08);
+  border:1px dashed var(--neon2);
+}
+.alt-box h3{font-size:14px;color:var(--neon2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.alt-item{padding:6px 0;font-size:15px;border-bottom:1px solid rgba(124,77,255,.15)}
+.alt-item:last-child{border:none}
+.copy-btn{
+  margin-top:16px;width:100%;padding:13px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;
+  background:rgba(0,255,213,.1);color:var(--neon1);border:1px solid var(--neon1);transition:.2s;
+}
+.copy-btn:hover{background:rgba(0,255,213,.2)}
+.grave{
+  margin-top:26px;padding:18px;border-radius:16px;
+  background:rgba(255,46,99,.06);border:1px solid rgba(255,46,99,.3);
+}
+.grave h3{color:var(--neon3);font-size:15px;text-transform:uppercase;letter-spacing:1px}
+.grave-item{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;color:var(--muted);border-bottom:1px dashed rgba(255,46,99,.15)}
+.grave-total{margin-top:10px;font-weight:800;color:var(--neon3)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{
+  padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;
+  background:#0d0d18;border:1px solid #2a2a44;color:var(--muted);transition:.2s;
+}
+.chip:hover{border-color:var(--neon1);color:var(--neon1)}
+.sym-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.sym{
+  padding:11px 12px;border-radius:12px;cursor:pointer;font-size:13.5px;
+  background:#0d0d18;border:1px solid #2a2a44;color:var(--muted);transition:.2s;
+}
+.sym.on{border-color:var(--neon3);color:var(--neon3);background:rgba(255,46,99,.08)}
+.dx-item{
+  margin-top:14px;padding:16px;border-radius:14px;background:#0d0d18;border:1px solid #2a2a44;
+  animation:cardIn .4s ease;
+}
+.dx-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.dx-name{font-weight:800;font-size:16px}
+.dx-price{color:var(--neon1);font-weight:700;white-space:nowrap}
+.dx-diff{font-size:13px;color:var(--muted)}
+.dx-joke{margin-top:8px;font-size:13.5px;color:#c9b8ff;font-style:italic}
+.dx-steps{margin-top:10px;padding:12px;border-radius:10px;background:rgba(0,255,213,.05);font-size:13.5px;line-height:1.7}
+.dx-steps b{color:var(--neon1)}
+.warn{margin-top:14px;font-size:12.5px;color:var(--muted);text-align:center}
+.danger-note{color:var(--neon3)}
+.range-wrap{margin-top:6px}
+input[type=range]{width:100%;accent-color:var(--neon1)}
+.area-val{font-weight:800;color:var(--neon1);font-size:18px}
+.estimate{
+  text-align:center;font-size:clamp(30px,7vw,48px);font-weight:900;color:var(--neon1);
+  text-shadow:0 0 30px rgba(0,255,213,.5);margin-top:8px;
+}
+.estimate.danger{color:var(--neon3);text-shadow:0 0 30px rgba(255,46,99,.5)}
+.stage-row{margin:12px 0}
+.stage-name{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:5px}
+.plan{margin-top:18px;padding:16px;border-radius:14px;background:rgba(0,255,213,.05);border:1px solid rgba(0,255,213,.2)}
+.plan h3{color:var(--neon1);font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.plan ol{padding-left:20px;font-size:14px;line-height:1.9;color:var(--text)}
+.coins{position:fixed;top:-60px;z-index:99;pointer-events:none;font-size:26px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(340deg);opacity:.9}}
+footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;line-height:1.8}
+@media(max-width:520px){.sym-grid{grid-template-columns:1fr}.card{padding:20px 16px}}
+</style>
 </head>
 <body>
-    <div class="rain-effect" id="rain"></div>
-    <header>
-        <h1>Стоит ли покупать?</h1>
-    </header>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="wrap">
+<header>
+  <h1>💰 СТОИТ ЛИ ЭТО ПОКУПАТЬ?</h1>
+  <div class="sub">Переводим деньги в часы твоей жизни. Без пощады.</div>
+</header>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'purchases')">🛒 Покупки</button>
-        <button class="tab-btn" onclick="openTab(event, 'car')">🔧 Машина</button>
-        <button class="tab-btn" onclick="openTab(event, 'house')">🏠 Дом</button>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('buy',this)">🛒 Покупки</div>
+  <div class="tab" onclick="showTab('car',this)">🔧 Машина</div>
+  <div class="tab" onclick="showTab('home',this)">🏠 Дом</div>
+</div>
+
+<!-- ==================== ВКЛАДКА ПОКУПКИ ==================== -->
+<div id="tab-buy" class="tabpane">
+<div class="card" id="buyCard">
+  <label>Что покупаешь?</label>
+  <input type="text" id="itemName" placeholder="например, кроссовки" maxlength="40">
+  <label>Цена, ₽</label>
+  <input type="number" id="price" placeholder="15000" min="1">
+  <label>Зарплата в месяц, ₽</label>
+  <input type="number" id="salary" placeholder="80000" min="1">
+  <label>Твой график</label>
+  <div class="seg" id="schedule">
+    <button class="on" data-h="176">5/2</button>
+    <button data-h="132">4/3</button>
+    <button data-h="176">2/2 (12ч)</button>
+    <button data-h="320">Вахта</button>
+  </div>
+  <button class="btn-big" onclick="calc()">ПОСЧИТАТЬ МОЮ ЖИЗНЬ ⏱</button>
+  <div class="chips">
+    <span class="chip" onclick="quick('Кофе с собой',350)">☕ Кофе 350</span>
+    <span class="chip" onclick="quick('Кроссовки',15000)">👟 Кроссовки 15 000</span>
+    <span class="chip" onclick="quick('Смартфон',80000)">📱 Смартфон 80 000</span>
+    <span class="chip" onclick="quick('Ноутбук',120000)">💻 Ноутбук 120 000</span>
+    <span class="chip" onclick="quick('Машина',1500000)">🚗 Машина 1 500 000</span>
+  </div>
+  <button class="btn-ghost" onclick="randomBuy()">🎲 Случайная покупка</button>
+
+  <div class="result" id="resBuy">
+    <div class="big-num" id="bigNum">0</div>
+    <div class="big-label">часов твоей жизни</div>
+    <div class="verdict" id="verdict"></div>
+    <div class="timer" id="liveTimer"></div>
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-top"><span>📅 Рабочих дней</span><span id="bDays">0</span></div>
+        <div class="bar"><div class="bar-fill f1" id="barDays"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-top"><span>📺 Сериалов по 40 мин</span><span id="bSerials">0</span></div>
+        <div class="bar"><div class="bar-fill f2" id="barSerials"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-top"><span>😴 Ночей крепкого сна</span><span id="bSleep">0</span></div>
+        <div class="bar"><div class="bar-fill f3" id="barSleep"></div></div>
+      </div>
     </div>
-
-    <!-- Вкладка Покупки -->
-    <div id="purchases" class="tab-content active">
-        <div class="calculator-box">
-            <div class="input-group">
-                <label for="item">Что покупаешь?</label>
-                <input type="text" id="item" placeholder="например, кроссовки">
-            </div>
-            <div class="input-group">
-                <label for="price">Цена (₽)</label>
-                <input type="number" id="price" placeholder="Сколько стоит">
-            </div>
-            <div class="input-group">
-                <label for="salary">Твой доход в месяц (₽)</label>
-                <input type="number" id="salary" placeholder="Твой доход">
-            </div>
-            <div class="quick-buttons">
-                <button class="quick-btn" onclick="setQuickItem('кроссовки', 12000)">Кроссовки</button>
-                <button class="quick-btn" onclick="setQuickItem('смартфон', 35000)">Смартфон</button>
-                <button class="quick-btn" onclick="setQuickItem('наушники', 8000)">Наушники</button>
-                <button class="quick-btn" onclick="setRandomItem()">Случайная покупка</button>
-            </div>
-            <button class="action-btn" onclick="calculate()">Рассчитать</button>
-            <div class="result" id="result"></div>
-        </div>
+    <div class="alt-box">
+      <h3>🤔 Вместо этого ты мог бы купить</h3>
+      <div id="altList"></div>
     </div>
+    <button class="copy-btn" onclick="copyResult()">📋 Скопировать результат (и похвастаться/пожаловаться)</button>
+  </div>
 
-    <!-- Вкладка Машина -->
-    <div id="car" class="tab-content">
-        <div class="calculator-box">
-            <p class="section-text">
-                Здесь будет калькулятор для машины: кредит, страховка, бензин и ТО. Пока в разработке!
-            </p>
-        </div>
-    </div>
+  <div class="grave" id="grave" style="display:none">
+    <h3>⚰️ Кладбище твоих покупок</h3>
+    <div id="graveList"></div>
+    <div class="grave-total" id="graveTotal"></div>
+  </div>
+</div>
+</div>
 
-    <!-- Вкладка Дом -->
-    <div id="house" class="tab-content">
-        <div class="calculator-box">
-            <p class="section-text">
-                Здесь будет калькулятор для дома: ипотека, коммунальные платежи и ремонт. Пока в разработке!
-            </p>
-        </div>
-    </div>
+<!-- ==================== ВКЛАДКА МАШИНА ==================== -->
+<div id="tab-car" class="tabpane" style="display:none">
+<div class="card">
+  <label>Отметь симптомы (можно несколько)</label>
+  <div class="sym-grid" id="symGrid"></div>
+  <button class="btn-big" onclick="diagnose()">🔧 ПОСТАВИТЬ ДИАГНОЗ</button>
+  <div class="result" id="resCar"></div>
+  <div class="warn">⚠️ Это шутливо-полезная подсказка, а не диагностика в сервисе. Если пахнет горелым — не гугли, а вызывай помощь.</div>
+</div>
+</div>
 
-    <script>
-        function openTab(evt, tabName) {
-            const contents = document.querySelectorAll('.tab-content');
-            const buttons = document.querySelectorAll('.tab-btn');
-            
-            contents.forEach(content => content.classList.remove('active'));
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
+<!-- ==================== ВКЛАДКА ДОМ ==================== -->
+<div id="tab-home" class="tabpane" style="display:none">
+<div class="card">
+  <label>Материал стен</label>
+  <select id="hMaterial">
+    <option value="frame">🪵 Каркасник (быстро и дешевле)</option>
+    <option value="timber">🌲 Брус (классика)</option>
+    <option value="gas">🧱 Газобетон (тепло)</option>
+    <option value="brick">🧱 Кирпич (на века и на нервы)</option>
+  </select>
+  <label>Площадь дома</label>
+  <div class="range-wrap">
+    <input type="range" id="hArea" min="40" max="300" value="100" oninput="document.getElementById('areaVal').textContent=this.value+' м²'">
+    <div style="text-align:center;margin-top:4px"><span class="area-val" id="areaVal">100 м²</span></div>
+  </div>
+  <label>Фундамент</label>
+  <select id="hFound">
+    <option value="pile">🪝 Свайный (дёшево)</option>
+    <option value="slab">🧊 Плита (надёжно)</option>
+    <option value="strip">🧱 Лента (золотая середина)</option>
+  </select>
+  <label>Степень готовности</label>
+  <select id="hLevel">
+    <option value="box">📦 «Коробка» — стены и крыша, жить пока нельзя</option>
+    <option value="warm">🧣 Тёплый контур — можно жить, но аскетично</option>
+    <option value="full">🏰 Под ключ — заезжай и живи</option>
+  </select>
+  <button class="btn-big" onclick="calcHouse()">🏠 ПОСЧИТАТЬ СМЕТУ</button>
+  <div class="result" id="resHome"></div>
+  <div class="warn">💰 Цены очень примерные: зависит от региона, цен материалов и того, насколько ты оптимист при звонке бригаде.</div>
+</div>
+</div>
 
-        const items = [
-            { name: 'кроссовки', price: 12000 },
-            { name: 'смартфон', price: 35000 },
-            { name: 'наушники', price: 8000 },
-            { name: 'кофемашина', price: 25000 },
-            { name: 'велосипед', price: 30000 },
-            { name: 'игровая консоль', price: 45000 },
-            { name: 'умные часы', price: 15000 },
-            { name: 'фотоаппарат', price: 60000 },
-            { name: 'электросамокат', price: 28000 },
-            { name: 'ноутбук', price: 75000 }
-        ];
+<footer>
+  Сделано с юмором и без пощады к твоим тратам 💸<br>
+  Калькулятор ничего не отправляет в интернет — все расчёты живут у тебя в браузере.
+</footer>
+</div>
 
-        function setQuickItem(name, price) {
-            document.getElementById('item').value = name;
-            document.getElementById('price').value = price;
-            document.getElementById('result').innerHTML = '';
-        }
+<script>
+'use strict';
+var hourlyRate = 0, lastResult = null;
 
-        function setRandomItem() {
-            const random = items[Math.floor(Math.random() * items.length)];
-            document.getElementById('item').value = random.name;
-            document.getElementById('price').value = random.price;
-            document.getElementById('result').innerHTML = '';
-        }
+/* ---------- Вкладки ---------- */
+function showTab(id, el){
+  document.querySelectorAll('.tabpane').forEach(function(p){p.style.display='none'});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.getElementById('tab-'+id).style.display='block';
+  el.classList.add('active');
+}
 
-        function calculate() {
-            const item = document.getElementById('item').value.trim();
-            const price = parseFloat(document.getElementById('price').value);
-            const salary = parseFloat(document.getElementById('salary').value);
-            const resultDiv = document.getElementById('result');
+/* ---------- График ---------- */
+var monthHours = 176;
+document.getElementById('schedule').addEventListener('click', function(e){
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('#schedule button').forEach(function(b){b.classList.remove('on')});
+  e.target.classList.add('on');
+  monthHours = parseInt(e.target.dataset.h,10);
+});
 
-            if (!item || isNaN(price)) {
-                resultDiv.innerHTML = '<strong style="color: #ff5252;">Пожалуйста, заполни название и цену!</strong>';
-                return;
-            }
+/* ---------- Быстрый ввод ---------- */
+function quick(name, price){
+  document.getElementById('itemName').value = name;
+  document.getElementById('price').value = price;
+  if(!document.getElementById('salary').value) document.getElementById('salary').value = 80000;
+  calc();
+}
 
-            let message = '';
-            if (salary) {
-                const days = (price / (salary / 30));
-                const daysText = days.toFixed(1).replace('.', ',');
-                message = `Цена "${item}" — ${price.toLocaleString()} ₽. Это примерно ${daysText} дней твоей работы (при зарплате ${salary.toLocaleString()} ₽).`;
-            } else {
-                message = `Цена "${item}" — ${price.toLocaleString()} ₽.`;
-            }
+/* ---------- Вердикты ---------- */
+function verdictFor(hours){
+  if(hours <= 4)  return ['Легче лёгкого 😌','var(--neon1)'];
+  if(hours <= 40) return ['Нормально, бери 👍','var(--neon1)'];
+  if(hours <= 160)return ['Серьёзно задумайся 🤔','#ff9f1c'];
+  if(hours <= 480)return ['Это уже любовь 💔','var(--neon3)'];
+  return ['💀 Ну ты и смелый','var(--neon3)'];
+}
 
-            resultDiv.innerHTML = message;
-        }
+/* ---------- Случайные покупки ---------- */
+var randomItems = [
+  ['Набор «Я взрослый»: швабра, пакет с пакетами и 3 вида чая', 1290, 'Идеально для тех, кто хочет выглядеть серьёзно, но не готов мыть швабру.'],
+  ['Подписка на «Тишину в доме» на 12 месяцев', 4990, 'Гарантий нет: тишина может прерваться соседом с перфоратором.'],
+  ['Антистресс-камень (обычный камень, но с гарантией спокойствия)', 890, 'Инструкция: держи в руке и вспоминай, что за него заплатил.'],
+  ['Футболка «Я не сплю, я медитирую»', 1690, 'Для совещаний, где ты закрыл глаза на 3 секунды.'],
+  ['Комплект «Готов к апокалипсису»: фонарик, спички и список тревог', 3490, 'Список тревог идёт бесплатно в подарок.'],
+  ['Книга «Как перестать покупать книги»', 999, 'Прочитаешь на 30-й странице и купишь ещё три.'],
+  ['Кружка «Всё под контролем» (протекает ровно в 14:00)', 740, 'Как и твой рабочий день.'],
+  ['Сертификат на один спокойный день без уведомлений', 12000, 'Действует, если сам не откроешь телефон. Никто не проверял.'],
+  ['Запасной пульт от телевизора (на случай потери основного)', 590, 'Потеряется вместе с основным. Это закон природы.'],
+  ['Маска кота, светящаяся в темноте', 1190, 'Кот в доме теперь официально главный.'],
+  ['Домашний метеорит (да, такие продаются)', 8900, 'Купи — и расскажи детям, что упало с неба прямо в посылку.'],
+  ['Носки с паттерном «потерянная левая»', 690, 'Правая найдётся. Левая — легенда.'],
+  ['Тренажёр «отжимания от дивана» (наклейка на диван)', 1500, 'Эффективность: 100%. Использование: 0%.'],
+  ['Умная колонка, которая говорит только правду', 19900, 'Предупреждение: скажет, что ботинки старые.'],
+  ['Гидромассажная ванночка для ног', 4490, 'Твой позвоночник скажет спасибо, а соседи снизу — вряд ли.'],
+  ['Курс «Как перестать покупать курсы»', 5900, 'Куплен по акции со скидкой 70%. Ирония оценена позже.'],
+  ['Ковер с орнаментом «лошади в галактике»', 7300, 'Гости будут спрашивать. Ты не будешь знать ответ.'],
+  ['Подушка «Отличник» (с гравировкой)', 1290, 'Мотивирует ровно до первого будильника.'],
+  ['Зеркало для селфи с подсветкой «как у блогера»', 5900, 'Свет идеальный, жизнь чуть менее.'],
+  ['Набор «ЗОЖ на неделю»: батончик, шейкер и мотивация', 2790, 'Мотивация заканчивается в четверг.'],
+  ['Электрическая зубная щётка с Wi-Fi', 8900, 'Щётка анализирует чистку и оценивает тебя молча.'],
+  ['Гантели (станут вешалкой для одежды)', 3900, 'Начальный вес — 8 кг. Вес совести — больше.'],
+  ['Аквариум с одним роботом-рыбкой', 2490, 'Не кормить! Кормить бесполезно.'],
+  ['Плед с рукавами «Снимаю сериал»', 1490, 'Взрослость отменяется на время просмотра.'],
+  ['Мини-фонтан для стола «Дзен в офисе»', 1790, 'Звук воды заглушает звук дедлайна.'],
+  ['Доска для заметок (через месяц — доска для пыли)', 990, 'Первая запись: «купить доску для заметок».']
+];
+var rndIdx = -1;
 
-        // Анимация дождя
-        function createRain() {
-            const rain = document.getElementById('rain');
-            const dropCount = 50;
-            for (let i = 0; i < dropCount; i++) {
-                const drop = document.createElement('div');
-                drop.classList.add('drop');
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                drop.style.animationDelay = Math.random() * 2 + 's';
-                rain.appendChild(drop);
-            }
-        }
-        createRain();
-    </script>
+function randomBuy(){
+  var i;
+  do { i = Math.floor(Math.random()*randomItems.length); } while(i===rndIdx && randomItems.length>1);
+  rndIdx = i;
+  var item = randomItems[i];
+  document.getElementById('itemName').value = item[0];
+  document.getElementById('price').value = item[1];
+  if(!document.getElementById('salary').value) document.getElementById('salary').value = 80000;
+  var inp = document.getElementById('itemName');
+  inp.dataset.desc = item[2];
+  calc();
+  setTimeout(function(){alert('📦 ' + item[0] + '\n\n' + item[2]);}, 900);
+}
+
+/* ---------- Расчёт ---------- */
+function animateNum(el, target, isDanger){
+  el.classList.toggle('danger', isDanger);
+  var start = performance.now(), dur = 1200;
+  function step(t){
+    var p = Math.min((t-start)/dur, 1);
+    var eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(target*eased).toLocaleString('ru-RU');
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function calc(){
+  var name = document.getElementById('itemName').value.trim() || 'покупка';
+  var price = parseInt(document.getElementById('price').value,10);
+  var salary = parseInt(document.getElementById('salary').value,10);
+  var card = document.getElementById('buyCard');
+  if(!price || !salary || price<=0 || salary<=0){
+    card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+    return;
+  }
+  var hourly = salary / monthHours;
+  hourlyRate = hourly;
+  var hours = Math.round(price / hourly);
+  var workDays = Math.round(hours / 8);
+  var serials = Math.round(hours*60/40);
+  var sleep = (hours/8).toFixed(1);
+
+  document.getElementById('resBuy').classList.add('show');
+  animateNum(document.getElementById('bigNum'), hours, hours>160);
+  var v = verdictFor(hours);
+  var vd = document.getElementById('verdict');
+  vd.textContent = v[0];
+  vd.style.color = v[1];
+  vd.style.textShadow = '0 0 25px ' + v[1];
+
+  document.getElementById('bDays').textContent = workDays.toLocaleString('ru-RU');
+  document.getElementById('bSerials').textContent = serials.toLocaleString('ru-RU');
+  document.getElementById('bSleep').textContent = sleep;
+  var maxBar = Math.max(workDays, serials/2, sleep, 1);
+  document.getElementById('barDays').style.width = Math.min(100, workDays/maxBar*100)+'%';
+  document.getElementById('barSerials').style.width = Math.min(100, (serials/2)/maxBar*100)+'%';
+  document.getElementById('barSleep').style.width = Math.min(100, sleep/maxBar*100)+'%';
+
+  /* Вместо этого ты мог бы купить */
+  var alts = [];
+  var nShawarma = Math.floor(price/350);
+  if(nShawarma>=1) alts.push('🌯 ' + nShawarma.toLocaleString('ru-RU') + ' × шаурма');
+  if(price>=20000) alts.push('🔧 3 × подшипник ступицы + работа');
+  if(price>=60000) alts.push('🏖 Отпуск в Сочи (на двоих, но скромно)');
+  if(price>=150000) alts.push('🚗 Половина подержанной Лады');
+  if(price>=500000) alts.push('🏠 Задаток за участок «с перспективой»');
+  if(nShawarma>=1 && nShawarma<20000) alts.push('🍕 ' + Math.floor(price/700) + ' × пицца');
+  if(alts.length===0) alts.push('🫥 Ничего. Ну, почти ничего.');
+  var altHtml = alts.map(function(a){return '<div class="alt-item">'+a+'</div>'}).join('');
+  document.getElementById('altList').innerHTML = altHtml;
+
+  /* Таймер */
+  startLiveTimer(hours, name);
+
+  /* Кладбище */
+  addGrave(name, price, hours);
+
+  lastResult = {name:name, price:price, hours:hours};
+  coinRain(Math.min(60, Math.max(8, Math.round(price/8000))));
+}
+
+/* ---------- Живой таймер ---------- */
+var timerInt = null;
+function startLiveTimer(hours, name){
+  if(timerInt) clearInterval(timerInt);
+  var remaining = hours;
+  var el = document.getElementById('liveTimer');
+  function tick(){
+    if(remaining<=0){
+      el.textContent = '✅ Отработано! Вещь теперь официально твоя.';
+      clearInterval(timerInt);
+      return;
+    }
+    var h = Math.floor(remaining), m = Math.floor((remaining-h)*60), s = Math.floor((((remaining-h)*60)-m)*60);
+    el.textContent = '⏱ Осталось отработать: ' + h + ' ч ' + String(m).padStart(2,'0') + ' мин ' + String(s).padStart(2,'0') + ' сек (ускоренно)';
+    remaining -= 1;
+  }
+  tick();
+  timerInt = setInterval(tick, 1000);
+}
+
+/* ---------- Кладбище ---------- */
+function getGrave(){ try{ return JSON.parse(localStorage.getItem('graveList')||'[]'); }catch(e){ return []; } }
+function addGrave(name, price, hours){
+  var g = getGrave();
+  g.push({n:name, p:price, h:hours});
+  if(g.length>50) g = g.slice(-50);
+  try{ localStorage.setItem('graveList', JSON.stringify(g)); }catch(e){}
+  renderGrave();
+}
+function renderGrave(){
+  var g = getGrave();
+  if(g.length===0) return;
+  var box = document.getElementById('grave');
+  box.style.display='block';
+  var html = g.slice(-7).map(function(x){
+    return '<div class="grave-item"><span>⚰️ ' + escapeHtml(x.n) + '</span><span>' + x.h.toLocaleString('ru-RU') + ' ч</span></div>';
+  }).join('');
+  document.getElementById('graveList').innerHTML = html;
+  var totalH = g.reduce(function(s,x){return s+x.h},0);
+  var totalP = g.reduce(function(s,x){return s+x.p},0);
+  document.getElementById('graveTotal').textContent =
+    'Итого: ' + totalH.toLocaleString('ru-RU') + ' часов жизни на ' + g.length + ' покупок за ' + totalP.toLocaleString('ru-RU') + ' ₽';
+}
+function escapeHtml(s){ return s.replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+
+/* ---------- Копирование ---------- */
+function copyResult(){
+  if(!lastResult) return;
+  var txt = 'Моя «' + lastResult.name + '» стоит ' + lastResult.hours.toLocaleString('ru-RU') +
+    ' часов моей жизни 😱 Посчитай и ты → ссылка в профиле!';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ flashCopy(); }).catch(function(){ fallbackCopy(txt); });
+  } else { fallbackCopy(txt); }
+}
+function fallbackCopy(txt){
+  var ta = document.createElement('textarea');
+  ta.value = txt; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); flashCopy(); }catch(e){}
+  document.body.removeChild(ta);
+}
+function flashCopy(){
+  var b = document.querySelector('.copy-btn');
+  var old = b.textContent;
+  b.textContent = '✅ Скопировано! Кидай другу — пусть страдает тоже';
+  setTimeout(function(){ b.textContent = old; }, 2200);
+}
+
+/* ---------- Дождь монет ---------- */
+function coinRain(n){
+  var em = ['💰','💸','🪙','💵'];
+  for(var i=0;i<n;i++){
+    var c = document.createElement('div');
+    c.className='coins';
+    c.textContent = em[Math.floor(Math.random()*em.length)];
+    c.style.left = (Math.random()*100)+'vw';
+    c.style.animationDuration = (1.6 + Math.random()*1.6)+'s';
+    c.style.fontSize = (18+Math.random()*22)+'px';
+    document.body.appendChild(c);
+    setTimeout(function(node){ return function(){ node.remove(); }; }(c), 3400);
+  }
+}
+
+/* ==================== ДИАГНОСТИКА МАШИНЫ ==================== */
+var symptoms = [
+  {id:'nostart', name:'Не заводится', causes:[
+    {n:'Аккумулятор сел', p:[6000,14000], d:'🙂 Своими руками', j:'Классика жанра: «я же недавно менял» — три года назад.',
+     s:['Проверь клеммы: окислились — зачистить','«Прикурить» от другого авто (минусовую клемму цеплять последней)','Если АКБ старше 4 лет — лучше менять, а не заряжать']},
+    {n:'Свечи зажигания', p:[800,4000], d:'🙂 Своими руками', j:'Дешёвая деталь, которой винят всё на свете. Иногда заслуженно.',
+     s:['Дай мотору остыть','Снимай по одной, смотри нагар','Менять комплектом, не по одной']},
+    {n:'Топливный насос', p:[5000,18000], d:'😐 Средняя', j:'Умирает обычно в самый неподходящий момент. Как и положено насосам.',
+     s:['Послушай: при включении зажигания должен гудеть пару секунд','Если тишина — проверь предохранитель насоса','Замена — чаще под задним сиденьем, но уточни по модели']}
+  ]},
+  {id:'stall', name:'Глохнет на ходу', causes:[
+    {n:'Дроссельная заслонка грязная', p:[500,3000], d:'🙂 Своими руками', j:'Ей нечем дышать. Как и тебе в понедельник.',
+     s:['Сними патрубок','Очиститель карбюратора + мягкая тряпка','Не скреби чем попало!']},
+    {n:'Свечи / катушка зажигания', p:[800,9000], d:'🙂–😐 Зависит от катушки', j:'Если троит и дёргается — почти наверняка они.',
+     s:['Проверь свечи на нагар','Катушки меняй по одной, чтобы поймать виновника','Провода — на трещины']},
+    {n:'Топливный насос', p:[5000,18000], d:'😐 Средняя', j:'Глохнет на светофоре — это не романтика, это насос просит еды.',
+     s:['Проверь давление в рампе','Забитый фильтр — сначала он','Насос — если фильтр ок']}
+  ]},
+  {id:'power', name:'Теряет тягу', causes:[
+    {n:'Воздушный фильтр', p:[500,2500], d:'🙂 Своими руками', j:'Самая недооценённая деталь. Мотор просто задыхается.',
+     s:['Открой короб фильтра','Если на просвет не видно солнца — менять','Меняй каждые 10–15 тыс. км']},
+    {n:'Лямбда-зонд (датчик кислорода)', p:[3000,15000], d:'😐 Средняя', j:'Мозг мотора путает показания и льёт лишний бензин.',
+     s:['Считай ошибки сканером OBD-II','Проверь разъём на окисление','Замена — гаечный ключ и терпение']},
+    {n:'Забитый катализатор', p:[20000,80000], d:'😰 В сервис', j:'Симптом: машина едет, как будто за ней привязан рояль.',
+     s:['Диагностика давления на выпуске','Только в сервис — там и решим']},
+    {n:'ГРМ (ремень/цепь) — растянут', p:[15000,60000], d:'😰 В сервис', j:'Дорого. Но дороже — когда рвётся. Проверь по регламенту!',
+     s:['Метка пробега: ремень ~60–100 тыс. км','Стук и ошибки по фазам — сразу в сервис']}
+  ]},
+  {id:'smoke', name:'Дым из выхлопа', causes:[
+    {n:'Сизый дым — маслосъёмные колпачки / кольца', p:[15000,90000], d:'😰 В сервис', j:'Масло уходит в камеру сгорания. Машина «подкуривает» и стыдится.',
+     s:['Замерь расход масла','Компрессия двигателя покажет масштаб','Капремонт или колпачки — решать по замерам']},
+    {n:'Белый дым (не пар) — прокладка ГБЦ', p:[25000,90000], d:'😰 В сервис', j:'Самая грустная причина в этом списке. Держись.',
+     s:['Проверь антифриз: уходит без следа?','Масло эмульсией (как майонез)? Это тревожно','Немедленно в сервис, не ездить!']},
+    {n:'Чёрный дым — перелив топлива', p:[3000,20000], d:'😐 Средняя', j:'Сажа. Богатая смесь. Иногда просто датчик барахлит.',
+     s:['Ошибки по сканеру','Чистка форсунок','Проверь воздушный фильтр']}
+  ]},
+  {id:'noise', name:'Стук / гул на ходу', causes:[
+    {n:'Ступичный подшипник', p:[2500,12000], d:'😐 Средняя', j:'Гул нарастает с поворотом? Это он, однозначно он.',
+     s:['Поверни руль на ходу — гул меняется?','Меняй парой, не по одному','Пресс или съёмник обязателен']},
+    {n:'ШРУС (граната)', p:[3000,10000], d:'😐 Средняя', j:'Хруст на поворотах — щелчки ШРУСа. Не оружие, но тоже опасен.',
+     s:['Хруст при повороте — верный признак','Осмотри пыльник: порван — менять гранату','Смазка ШРУС-4 — по мелочи']},
+    {n:'Стойки амортизаторов', p:[8000,25000], d:'😐 Средняя', j:'Машина «качается на волнах» — стойки отслужили своё.',
+     s:['Раскачай угол авто — должно гаснуть за 1–2 качка','Осмотр на подтёки','Меняй парой по осям']}
+  ]},
+  {id:'puddle', name:'Лужа под машиной', causes:[
+    {n:'Масло (чёрное)', p:[2000,20000], d:'😐 Зависит от места', j:'Чёрная — масло. Коричневая — эмоции после счёта за ремонт.',
+     s:['Определи жидкость по цвету','Прокладка клапанной крышки — часто и недорого','Сальники коленвала — сложнее']},
+    {n:'Антифриз (розовый/зелёный)', p:[1000,15000], d:'🙂–😐', j:'Розовая лужа — не цветочный сироп. Это антифриз, и он не вечен.',
+     s:['Патрубки — хомуты подтянуть','Радиатор — на трещины','Помпа — если течёт из её зоны']},
+    {n:'Тормозная жидкость (жёлто-коричневая)', p:[2000,15000], d:'😐 Средняя', j:'Если это ТЖ — не едет машина до ремонта. Совсем. Точка.',
+     s:['Проверь уровень в бачке','Осмотри цилиндры и шланги','Прокачка тормозов после ремонта']}
+  ]},
+  {id:'brake', name:'Плохо тормозит / скрипит', causes:[
+    {n:'Тормозные колодки', p:[2000,8000], d:'🙂 Своими руками', j:'Скрип — не всегда «попрошайничество», иногда честный сигнал.',
+     s:['Толщина накладок меньше 3 мм — менять','Меняй парой по осям','Смажь направляющие суппорта']},
+    {n:'Тормозные диски', p:[6000,25000], d:'😐 Средняя', j:'Если колодки свежие, а скрип остался — смотри диски.',
+     s:['Биение руля при торможении — верный признак','Минимальная толщина указана на диске','Замена вместе с колодками']}
+  ]},
+  {id:'battery', name:'Аккумулятор быстро садится', causes:[
+    {n:'Аккумулятор умер', p:[6000,16000], d:'🙂 Своими руками', j:'Если зимой утром крутит вяло — уже диагноз. К сожалению.',
+     s:['Замерь напряжение: 12.6В — норма','Ниже 11.5В после ночи — на пенсию','Плотность электролита — если обслуживаемый']},
+    {n:'Генератор / реле-регулятор', p:[7000,30000], d:'😰 В сервис', j:'Аккумулятор — не всегда виноват. Иногда это генератор пишет доносы.',
+     s:['Замерь напряжение на заведённой: 13.8–14.5В','Ниже — генератор недодаёт','Проверь ремень и шкивы']}
+  ]},
+  {id:'overheat', name:'Перегревается', causes:[
+    {n:'Термостат', p:[1500,7000], d:'😐 Средняя', j:'Стрелка «пляшет» — термостат живёт своей жизнью.',
+     s:['Проверь: нижний патрубок радиатора тёплый?','Если холодный — термостат закрыт','Меняй с прокладкой и антифризом']},
+    {n:'Помпа (насос охлаждения)', p:[4000,15000], d:'😐 Средняя', j:'Люфт шкива или свист — помпа прощается.',
+     s:['Осмотр на подтёки антифриза','Проверь подшипник на люфт','Меняй вместе с ремнём ГРМ, если они вместе']},
+    {n:'Радиатор забит / вентилятор', p:[3000,25000], d:'😐 Средняя', j:'Пробег в пробках + старый радиатор = горячий мотор.',
+     s:['Промой радиатор снаружи (аккуратно!)','Проверь вентилятор на включение','Датчик температуры — тоже под подозрением']}
+  ]}
+];
+
+function renderSymptoms(){
+  var g = document.getElementById('symGrid');
+  g.innerHTML = symptoms.map(function(s,i){
+    return '<div class="sym" data-i="'+i+'" onclick="toggleSym(this)">'+s.name+'</div>';
+  }).join('');
+}
+function toggleSym(el){ el.classList.toggle('on'); }
+
+function diagnose(){
+  var sel = [];
+  document.querySelectorAll('#symGrid .sym.on').forEach(function(el){ sel.push(symptoms[parseInt(el.dataset.i,10)]); });
+  var res = document.getElementById('resCar');
+  if(sel.length===0){
+    res.classList.add('show');
+    res.innerHTML = '<div class="verdict" style="color:#ff9f1c">Выбери хотя бы один симптом 🙂<br><span style="font-size:14px;color:var(--muted)">Или машина просто так стучит, для атмосферы?</span></div>';
+    return;
+  }
+  var seen = {}, rows = [], minTotal=0, maxTotal=0;
+  sel.forEach(function(sym){
+    sym.causes.forEach(function(c){
+      if(seen[c.n]) return;
+      seen[c.n] = true;
+      minTotal += c.p[0]; maxTotal += c.p[1];
+      rows.push(c);
+    });
+  });
+  minTotal = Math.min(minTotal, 0) || 0;
+  var life = '';
+  if(hourlyRate>0){
+    var h1 = Math.round(minTotal/hourlyRate), h2 = Math.round(maxTotal/hourlyRate);
+    life = '<div class="timer" style="color:var(--neon3)">⏱ Это ' + h1.toLocaleString('ru-RU') + '–' + h2.toLocaleString('ru-RU') + ' часов твоей работы</div>';
+  }
+  var rowsHtml = rows.map(function(c){
+    return '<div class="dx-item">' +
+      '<div class="dx-head"><span class="dx-name">' + c.n + '</span><span class="dx-price">' +
+      c.p[0].toLocaleString('ru-RU') + '–' + c.p[1].toLocaleString('ru-RU') + ' ₽</span></div>' +
+      '<div class="dx-diff">' + c.d + '</div>' +
+      '<div class="dx-joke">“' + c.j + '”</div>' +
+      '<div class="dx-steps"><b>Что делать:</b><br>' + c.s.map(function(st,i){ return (i+1)+'. '+st; }).join('<br>') + '</div>' +
+      '</div>';
+  }).join('');
+  res.classList.add('show');
+  res.innerHTML =
+    '<div class="verdict" style="color:var(--neon2)">🩺 Возможные причины (' + rows.length + ')</div>' +
+    life + rowsHtml +
+    '<div class="grave" style="margin-top:18px"><h3>💸 Итог по кошельку</h3>' +
+    '<div class="grave-total">От ' + minTotal.toLocaleString('ru-RU') + ' до ' + maxTotal.toLocaleString('ru-RU') + ' ₽</div>' +
+    '<div class="warn" style="margin-top:6px">Если сумма тебя напугала — возможно, это и есть правда жизни автовладельца. Сочувствуем 🙏</div></div>';
+  coinRain(12);
+}
+
+/* ==================== ДОМ ==================== */
+var materialPrices = {
+  frame:{name:'Каркасник', perM2:55000},
+  timber:{name:'Брус', perM2:75000},
+  gas:{name:'Газобетон', perM2:95000},
+  brick:{name:'Кирпич', perM2:120000}
+};
+var foundPrices = { pile:{name:'Свайный', perM2:3500}, slab:{name:'Плита', perM2:8000}, strip:{name:'Лента', perM2:5500} };
+var levelMult = { box:0.55, warm:0.8, full:1.0 };
+var levelNames = { box:'«коробка»', warm:'тёплый контур', full:'под ключ' };
+var stages = [
+  {n:'Фундамент', w:0.15, c:'f1'},
+  {n:'Стены и перекрытия', w:0.30, c:'f2'},
+  {n:'Кровля', w:0.15, c:'f3'},
+  {n:'Окна, двери, инженерия', w:0.15, c:'f1'},
+  {n:'Отделка', w:0.20, c:'f2'},
+  {n:'«А, и ещё забыли…» (резерв)', w:0.05, c:'f3'}
+];
+
+function calcHouse(){
+  var m = materialPrices[document.getElementById('hMaterial').value];
+  var f = foundPrices[document.getElementById('hFound').value];
+  var lv = document.getElementById('hLevel').value;
+  var area = parseInt(document.getElementById('hArea').value,10);
+  var cost = (m.perM2 + f.perM2) * area;
+  cost = Math.round(cost * levelMult[lv]);
+  var min = Math.round(cost*0.85), max = Math.round(cost*1.35);
+
+  var years = '';
+  if(hourlyRate>0){
+    var yr = (max / (hourlyRate * monthHours * 12));
+    years = '<div class="verdict" style="font-size:20px;color:var(--neon3)">' +
+      (yr<1 ? '⏱ Это ' + Math.round(yr*12) + ' месяцев твоей работы' : '⏱ Это ' + Math.round(yr*10)/10 + ' лет твоей работы') +
+      '. Как ипотека, только без банка.</div>';
+  }
+
+  var stagesHtml = stages.map(function(st){
+    var part = Math.round(cost * st.w);
+    return '<div class="stage-row">' +
+      '<div class="stage-name"><span>' + st.n + '</span><span>' + part.toLocaleString('ru-RU') + ' ₽</span></div>' +
+      '<div class="bar"><div class="bar-fill ' + st.c + '" style="width:' + (st.w*100) + '%"></div></div></div>';
+  }).join('');
+
+  document.getElementById('resHome').classList.add('show');
+  document.getElementById('resHome').innerHTML =
+    '<div class="big-label" style="margin-top:16px">Смета на дом ' + m.name.toLowerCase() + ', ' + area + ' м², ' + levelNames[lv] + '</div>' +
+    '<div class="estimate' + (cost>5000000?' danger':'') + '">' + min.toLocaleString('ru-RU') + '–' + max.toLocaleString('ru-RU') + ' ₽</div>' +
+    years +
+    '<div class="bars">' + stagesHtml + '</div>' +
+    '<div class="plan"><h3>📋 План стройки (по шагам)</h3><ol>' +
+    '<li><b>Участок и документы</b> — проверь назначение земли ДО покупки. Серьёзно.</li>' +
+    '<li><b>Проект</b> — типовой дешевле. Индивидуальный — дороже и красивее.</li>' +
+    '<li><b>Фундамент</b> — не экономь тут: всё остальное стоит на нём буквально.</li>' +
+    '<li><b>Коробка</b> — стены, перекрытия, кровля. Не расходуй весь бюджет на стены!</li>' +
+    '<li><b>Тёплый контур</b> — окна, двери, утепление, отопление.</li>' +
+    '<li><b>Инженерия</b> — электрика, вода, канализация. До отделки!</li>' +
+    '<li><b>Отделка</b> — то, что видно. Делают в конце не потому, что «потом», а потому что так правильно.</li>' +
+    '<li><b>Резерв 10–15%</b> — его потратишь. Вопрос лишь когда.</li>' +
+    '</ol></div>';
+  coinRain(20);
+}
+
+/* ---------- Init ---------- */
+renderSymptoms();
+renderGrave();
+</script>
 </body>
 </html>
