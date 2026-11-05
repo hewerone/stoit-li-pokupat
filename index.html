@@ -49,11 +49,15 @@ h1{
 .card.shake{animation:shake .4s}
 @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
-input[type=number],input[type=text],select{
+input[type=number],select{
   width:100%;padding:13px 16px;border-radius:12px;border:1px solid #2a2a44;
   background:#0d0d18;color:var(--text);font-size:16px;outline:none;transition:.2s;
 }
 input:focus,select:focus{border-color:var(--neon1);box-shadow:0 0 0 3px rgba(0,255,213,.12)}
+input[type=text]{
+  width:100%;padding:13px 16px;border-radius:12px;border:1px solid #2a2a44;
+  background:#0d0d18;color:var(--text);font-size:16px;outline:none;transition:.2s;
+}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button{
   flex:1;min-width:80px;padding:11px 8px;border-radius:12px;cursor:pointer;
@@ -179,7 +183,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;lin
 <div id="tab-buy" class="tabpane">
 <div class="card" id="buyCard">
   <label>Что покупаешь?</label>
-  <input type="text" id="item" placeholder="Например, кроссовки" maxlength="40">
+  <input type="text" id="item" placeholder="например, кроссовки" maxlength="40">
   <label>Цена, ₽</label>
   <input type="number" id="price" placeholder="15000" min="1">
   <label>Зарплата в месяц, ₽</label>
@@ -308,7 +312,7 @@ document.getElementById('schedule').addEventListener('click', function(e){
 
 /* ---------- Быстрый ввод ---------- */
 function quick(name, price){
-  document.getElementById('itemName').value = name;
+  document.getElementById('item').value = name;
   document.getElementById('price').value = price;
   if(!document.getElementById('salary').value) document.getElementById('salary').value = 80000;
   calc();
@@ -358,14 +362,14 @@ function randomBuy(){
   var i;
   do { i = Math.floor(Math.random()*randomItems.length); } while(i===rndIdx && randomItems.length>1);
   rndIdx = i;
-  var item = randomItems[i];
-  document.getElementById('itemName').value = item[0];
-  document.getElementById('price').value = item[1];
+  var it = randomItems[i];
+  document.getElementById('item').value = it[0];
+  document.getElementById('price').value = it[1];
   if(!document.getElementById('salary').value) document.getElementById('salary').value = 80000;
-  var inp = document.getElementById('itemName');
-  inp.dataset.desc = item[2];
+  var inp = document.getElementById('item');
+  inp.dataset.desc = it[2];
   calc();
-  setTimeout(function(){alert('📦 ' + item[0] + '\n\n' + item[2]);}, 900);
+  setTimeout(function(){alert('📦 ' + it[0] + '\n\n' + it[2]);}, 900);
 }
 
 /* ---------- Расчёт ---------- */
@@ -382,7 +386,7 @@ function animateNum(el, target, isDanger){
 }
 
 function calc(){
-  var name = document.getElementById('itemName').value.trim() || 'покупка';
+  var name = document.getElementById('item').value.trim() || 'покупка';
   var price = parseInt(document.getElementById('price').value,10);
   var salary = parseInt(document.getElementById('salary').value,10);
   var card = document.getElementById('buyCard');
