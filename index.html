@@ -335,6 +335,7 @@ var hourlyRate = 0, lastResult = null;
 
 /* ---------- Вкладки ---------- */
 function showTab(id, el){
+  if (window.ym) ym(114108271, 'reachGoal', 'tab_' + id);
   document.querySelectorAll('.tabpane').forEach(function(p){p.style.display='none'});
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
   document.getElementById('tab-'+id).style.display='block';
