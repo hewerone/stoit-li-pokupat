@@ -163,7 +163,6 @@ input[type=range]{width:100%;accent-color:var(--neon1)}
 @keyframes fall{to{transform:translateY(110vh) rotate(340deg);opacity:.9}}
 footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;line-height:1.8}
 @media(max-width:520px){.sym-grid{grid-template-columns:1fr}.card{padding:20px 16px}}
-</style>
 .wave-btn {
   background: linear-gradient(45deg, #00f2ff, #0077ff, #00f2ff);
   background-size: 200% 200%;
@@ -190,6 +189,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;lin
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+</style>
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
@@ -221,7 +221,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;lin
     <button data-h="176">2/2 (12ч)</button>
     <button data-h="320">Вахта</button>
   </div>
-  <button class="wave-btn" onclick="startTimer(3294)">ПОСЧИТАТЬ МОЮ ЖИЗНЬ 🌀</button>
+<button class="wave-btn" onclick="startTimer(3294)">ПОСЧИТАТЬ МОЮ ЖИЗНЬ 🌀</button>
   <div class="chips">
     <span class="chip" onclick="quick('Кофе с собой',350)">☕ Кофе 350</span>
     <span class="chip" onclick="quick('Кроссовки',15000)">👟 Кроссовки 15 000</span>
@@ -470,17 +470,23 @@ function calc(){
 var timerInt = null;
 function startLiveTimer(hours, name){
   if(timerInt) clearInterval(timerInt);
-  var remaining = hours;
   var el = document.getElementById('liveTimer');
+  var startStamp = Date.now();
+  var totalSec = Math.round(hours * 3600);
   function tick(){
-    if(remaining<=0){
+    var elapsed = Math.floor((Date.now() - startStamp) / 1000);
+    var remSec = totalSec - elapsed;
+    if(remSec <= 0){
       el.textContent = '✅ Отработано! Вещь теперь официально твоя.';
       clearInterval(timerInt);
       return;
     }
-    var h = Math.floor(remaining), m = Math.floor((remaining-h)*60), s = Math.floor((((remaining-h)*60)-m)*60);
-    el.textContent = '⏱ Осталось отработать: ' + h + ' ч ' + String(m).padStart(2,'0') + ' мин ' + String(s).padStart(2,'0') + ' сек (ускоренно)';
-    remaining -= 1;
+    var h = Math.floor(remSec / 3600),
+        m = Math.floor((remSec % 3600) / 60),
+        s = remSec % 60;
+    el.textContent = '⏱ Осталось отработать: ' + h + ' ч ' +
+      String(m).padStart(2,'0') + ' мин ' +
+      String(s).padStart(2,'0') + ' сек';
   }
   tick();
   timerInt = setInterval(tick, 1000);
