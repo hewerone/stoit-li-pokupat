@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -164,6 +164,32 @@ input[type=range]{width:100%;accent-color:var(--neon1)}
 footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;line-height:1.8}
 @media(max-width:520px){.sym-grid{grid-template-columns:1fr}.card{padding:20px 16px}}
 </style>
+.wave-btn {
+  background: linear-gradient(45deg, #00f2ff, #0077ff, #00f2ff);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+  color: #000;
+  font-weight: bold;
+  padding: 20px 40px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 10px 20px rgba(0, 119, 255, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.wave-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 119, 255, 0.6);
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 </head>
 <body>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
@@ -195,7 +221,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:40px;lin
     <button data-h="176">2/2 (12ч)</button>
     <button data-h="320">Вахта</button>
   </div>
-  <button class="btn-big" onclick="calc()">ПОСЧИТАТЬ МОЮ ЖИЗНЬ ⏱</button>
+  <button class="wave-btn" onclick="startTimer(3294)">ПОСЧИТАТЬ МОЮ ЖИЗНЬ 🌀</button>
   <div class="chips">
     <span class="chip" onclick="quick('Кофе с собой',350)">☕ Кофе 350</span>
     <span class="chip" onclick="quick('Кроссовки',15000)">👟 Кроссовки 15 000</span>
