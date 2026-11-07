@@ -235,6 +235,17 @@ footer strong{color:var(--gold2);font-weight:700}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 @media(max-width:760px){
+  body{
+    background-image:
+      linear-gradient(180deg,rgba(17,17,15,.48) 0%,rgba(17,17,15,.68) 48%,#11110f 100%),
+      url("https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2400&q=85");
+    background-position:center top,center top;
+    background-size:100% 100%,100% auto;
+    background-repeat:no-repeat,no-repeat;
+    background-attachment:scroll;
+    background-color:var(--bg);
+  }
+
   .hero{padding:55px 0 35px}.main-grid{grid-template-columns:1fr}
   .calculator{padding:22px}.topbar{height:70px}.top-right{font-size:8px}
   footer{flex-direction:column}.side{display:grid;grid-template-columns:1fr 1fr}
